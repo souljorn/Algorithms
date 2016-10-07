@@ -1,41 +1,14 @@
+
 #include <iostream>
 #include <string>
 
 using namespace std;
 
 //Node Class
-class Node{
-private:
-	int data;
-	Node* next;
-public:
-	Node();
-	int getData();
-	Node* getNext();
-	void setData(int num);
-	void setNext(Node* next);
+struct Node {
+	int data = 0;
+	Node* next = NULL;
 };
-	Node::Node()
-	{
-		Node* next = NULL;
-		data= 0;
-	}
-	int Node::getData()
-	{
-		return data;
-	}
-	Node* Node::getNext()
-	{
-		return next;
-	}
-	void Node::setData(int num)
-	{
-		this->data = num;
-	}
-	void Node::setNext(Node* next)
-	{
-		this->next = next;
-	}
 
 //LinkedList class
 class LinkedList
@@ -46,57 +19,129 @@ private:
 public:
 
 	LinkedList();
-	void insert(Node* newNode ,int index);
+	void insert(Node* newNode, int index);
 	void remove(Node* pos, int data);
+	int pop();
+	void push(int data);
+	int getLength();
+	void setLength(int length);
+	Node* getHead();
+	void printList();
+	bool isEmpty();
 	~LinkedList();
 };
 LinkedList::LinkedList()
 {
-	head->setData(0);
-
-	listLength = 0;
+	head = new Node;	
+}
+LinkedList::~LinkedList()
+{
 }
 
-void LinkedList::insert(Node* newNode, int index)
+void LinkedList::insert(Node* iNode, int index)
 {
+	int length = getLength();
+
 	//check if index is less than zero or greater than listLength plus an
 	//added node
-	if(index < 0 || index > listLength + 1)
+	if (index < 0 || index > length + 1)
 	{
 		cout << " Please enter a valid index" << endl;
 	}
 	//check if it is the first node in the list
-	else if (index == 0 )
+	else if (isEmpty())
 	{
-		head= newNode;
-		listLength++;
+		head->data = iNode->data;
+		
 	}
 	//traverse the list until the correct index is found
 	else
 	{
 		int count = 0;
-		Node* temp = head;
-		Node* tail = head;
+		Node* tempNode = getHead();	//Temp Node
+		Node* tailNode = getHead();	//Tail Node
 		while (count < index)
 		{
 			if (count == index)
 			{
-				temp->setNext(newNode);
-				newNode->setNext(tail);
+				tempNode->next = iNode;
+				iNode->next = tailNode;
 			}
 			//traverse temp to position in index
-			temp = tail;
-			tail = temp->getNext();
-
+			tempNode = tailNode;
+			tailNode = tempNode->next;
 			count++;
 		}
 	}
 }//func
-int main(){
-	LinkedList list;
-	Node* n1 = new Node;
-	n1->setData(99);
+void LinkedList::push(int data)
+{
+	Node* iNode = new Node;
+	iNode->data = data;
+	Node* cNode;	//creator node 
+	Node* tNode = getHead();	//temp node
+	Node* tailNode = new Node;
+	tailNode = head->next;
+	// traverse to end of list
+	while (tailNode != NULL)
+	{
+		tNode = tailNode;
+		tailNode = tNode->next;
+	}
+	tNode->next = iNode;	//Takes last element 
+	iNode->next = NULL;		// pointed at by temp and points to
+							// new element iNode and point inode->next to NULL
+}
 
+Node* LinkedList::getHead() {
+	return this->head;
+}
+void LinkedList::setLength(int length)
+{
+	listLength = length;
+}
+int LinkedList::getLength() {
+	Node* tempNode = getHead();
+	int count = 1;
+	while(tempNode != NULL)
+	{	
+		setLength(count++);
+		tempNode = tempNode->next;
+	}
+	return listLength;
+}
+
+void LinkedList::printList() {
+	Node* tempNode = getHead();
+	while (tempNode != NULL) {
+		cout << tempNode->data << endl;
+		tempNode = tempNode->next;
+	}
+
+}
+
+bool LinkedList::isEmpty()
+{
+	if (head->next== NULL)
+		return true;
+	else
+		return false;
+}
+int main() {
+	LinkedList list;
+	cout << "Is List Empty: " << (list.isEmpty() ? "true" : "false")  << endl;
+	Node* n1 = new Node;
+	n1->data = 15;
 	list.insert(n1, 0);
+	list.printList();
+	for (int i = 1; i < 10; i++)
+	list.push(i);
+	list.printList();
+	
+	list.insert(n1, 5);
+	list.printList();
+	cout << "List Length: "<<list.getLength() << endl;
+	
+	system("pause");
 
 }
