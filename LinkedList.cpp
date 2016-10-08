@@ -25,6 +25,7 @@ public:
 	void push(int data);
 	int getLength();
 	void setLength(int length);
+	Node* getPosition(int position);
 	Node* getHead();
 	void printList();
 	bool isEmpty();
@@ -96,6 +97,28 @@ void LinkedList::push(int data)
 Node* LinkedList::getHead() {
 	return this->head;
 }
+
+Node* LinkedList::getPosition(int position)
+{
+	Node* tempNode = getHead();
+	int count = 0;
+	if (position == 1) {
+		return tempNode;
+	}
+	else if ((position < 1) || (tempNode->next == NULL)) {
+		return NULL;
+	}
+	else {
+		while (position != count)
+		{
+			tempNode = tempNode->next;
+			count++;
+			}
+		}
+		
+	return tempNode;
+	}
+	
 void LinkedList::setLength(int length)
 {
 	listLength = length;
@@ -110,6 +133,7 @@ int LinkedList::getLength() {
 	}
 	return listLength;
 }
+
 
 void LinkedList::printList() {
 	Node* tempNode = head->next;
@@ -146,7 +170,8 @@ int main() {
 	//list.insert(n1, 5);
 	list.printList();
 	cout << "List Length: "<<list.getLength() << endl;
-	
+	Node* n = list.getPosition(4);
+	cout << "This is the data in position 4: "<< n->data << endl;
 	system("pause");
 
 }
