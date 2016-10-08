@@ -41,15 +41,15 @@ LinkedList::~LinkedList()
 void LinkedList::insert(Node* iNode, int index)
 {
 	int length = getLength();
-
+	index = index + 1;//Due to offset of head not containing any data 
 	//check if index is less than zero or greater than listLength plus an
 	//added node
-	if (index < 0 || index > length + 1)
+	if (index < 1 || index > length + 1)
 	{
 		cout << " Please enter a valid index" << endl;
 	}
 	//check if it is the first node in the list
-	else if (isEmpty())
+	else if (isEmpty() && index == 1)
 	{
 		head->data = iNode->data;
 		
@@ -57,7 +57,7 @@ void LinkedList::insert(Node* iNode, int index)
 	//traverse the list until the correct index is found
 	else
 	{
-		int count = 0;
+		int count = 1;
 		Node* tempNode = getHead();	//Temp Node
 		Node* tailNode = getHead();	//Tail Node
 		while (count < index)
@@ -102,7 +102,7 @@ void LinkedList::setLength(int length)
 }
 int LinkedList::getLength() {
 	Node* tempNode = getHead();
-	int count = 1;
+	int count = 0;
 	while(tempNode != NULL)
 	{	
 		setLength(count++);
@@ -112,12 +112,17 @@ int LinkedList::getLength() {
 }
 
 void LinkedList::printList() {
-	Node* tempNode = getHead();
-	while (tempNode != NULL) {
-		cout << tempNode->data << endl;
-		tempNode = tempNode->next;
+	Node* tempNode = head->next;
+	if (head->next == NULL)
+	{
+		cout << "List is empty" << endl;
 	}
-
+	else {
+		while (tempNode != NULL) {
+			cout << tempNode->data << endl;
+			tempNode = tempNode->next;
+		}
+	}
 }
 
 bool LinkedList::isEmpty()
@@ -130,15 +135,15 @@ bool LinkedList::isEmpty()
 int main() {
 	LinkedList list;
 	cout << "Is List Empty: " << (list.isEmpty() ? "true" : "false")  << endl;
-	Node* n1 = new Node;
-	n1->data = 15;
-	list.insert(n1, 0);
+	//Node* n1 = new Node;
+	//n1->data = 15;
+	//list.insert(n1, 0);
 	list.printList();
 	for (int i = 1; i < 10; i++)
 	list.push(i);
 	list.printList();
 	
-	list.insert(n1, 5);
+	//list.insert(n1, 5);
 	list.printList();
 	cout << "List Length: "<<list.getLength() << endl;
 	
