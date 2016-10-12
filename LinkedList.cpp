@@ -20,20 +20,17 @@ private:
 	int listLength;
 public:
 
-	LinkedList();
-
-
-	int pop();
-	void pushHead(int data);
-	void push(int data);
-	int getLength();
-	void setLength(int length);
-	int getNth(int position);
-	void printList();
-	bool isEmpty();
-	void deleteNode(int delData);
-	void insertNode(int insertData, int position);
-	~LinkedList();
+	LinkedList();						//Constructor
+	int pop();							//Function to remove tail node of linked list
+	void pushHead(int data);	//Adds a node to the head
+	void push(int data);			//Adds a node to the tail
+	int getLength();				//Gets length
+	int getNth(int position);		//Gets value in nth position
+	void printList();				//Prints Linked List
+	bool isEmpty();				//returns a bool if empty
+	void deleteNode(int delData);	//deletes node with passed value
+	void insertNode(int insertData, int position);	//inserts node with data at position passed
+	~LinkedList();					//deconstructor
 };
 LinkedList::LinkedList()
 {
@@ -45,7 +42,6 @@ LinkedList::LinkedList()
 LinkedList::~LinkedList()
 {
 }
-
 
 void LinkedList::push(int data)
 {
@@ -77,18 +73,18 @@ void LinkedList::pushHead(int data){
 }
 
 int LinkedList::pop() {
-	Node* temp = head;
+	Node* delPtr = head;
 
 	int i = 0;
 	int length = getLength();
-	cout << length << endl;
 	while (i < length)
 	{
-		temp = temp->next;
+		delPtr= delPtr->next;
+		i++;
 	}
 
-	int tempData = temp->data;
-	delete temp;
+	int tempData = delPtr->data;
+
 
 	return tempData;
 }
@@ -113,22 +109,16 @@ int LinkedList::getNth(int position)
 	return m_prev->data;
 }
 
-void LinkedList::setLength(int length)
-{
-	listLength = length;
-}
-
 int LinkedList::getLength() {
 	m_prev = head;
 	int count = 0;
 	while(m_prev != NULL)
 	{
-		setLength(++count);
+		listLength = ++count;
 		m_prev = m_prev->next;
 	}
 	return listLength;
 }
-
 
 void LinkedList::printList() {
 	m_prev = head;
@@ -244,7 +234,15 @@ int main() {
 	cout << "List Length: "<<list.getLength() << endl;
 
 	list.insertNode(11,0);
+	for(int i = 0; i < 100; i++)
+	{
+		list.insertNode(i,i);
+	}
+
+	for(int i = 0; i < 100; i++)
+		{
+			list.deleteNode(i);
+		}
 
 	list.printList();
-
 }
