@@ -18,8 +18,8 @@ private:
 	Node* m_prev;
 	Node* m_current;
 	int listLength;
-public:
 
+public:
 	LinkedList();						//Constructor
 	int pop();							//Function to remove tail node of linked list
 	void pushHead(int data);	//Adds a node to the head
@@ -30,21 +30,34 @@ public:
 	bool isEmpty();				//returns a bool if empty
 	void deleteNode(int delData);	//deletes node with passed value
 	void insertNode(int insertData, int position);	//inserts node with data at position passed
-	~LinkedList();					//deconstructor
+	~LinkedList();					//destructor
 };
-LinkedList::LinkedList()
+
+LinkedList::LinkedList()		//Constructor
 {
-	head = NULL;
+	head = NULL;						//initialize all member variables
 	m_prev = NULL;
 	m_current = NULL;
 	listLength = 0;
 }
-LinkedList::~LinkedList()
+
+LinkedList::~LinkedList()		//Destructor
 {
+	Node *n = this->m_prev, *current = NULL; //initialization part
+
+	    while(n)                               //start cleanup of nodes of the list
+	    {
+	        current = n;
+	        n=n->next;
+	        delete(current);
+	    }
+
+	    delete head, m_prev, m_current, listLength ;
+
 }
 
-void LinkedList::push(int data)
-{
+void LinkedList::push(int data)		//Push Function
+{													//Pushes a value data onto the end of the list
 	Node* n = new Node;
 	n->next = NULL;
 	n->data = data;
@@ -73,20 +86,39 @@ void LinkedList::pushHead(int data){
 }
 
 int LinkedList::pop() {
-	Node* delPtr = head;
-
-	int i = 0;
-	int length = getLength();
-	while (i < length)
 	{
-		delPtr= delPtr->next;
-		i++;
+		Node* delPtr = NULL; //initialize nodes
+		m_prev = head;
+		m_current = head;
+
+		if (head == NULL){		//Test to make sure the list is not empty
+			cout << "List is empty" << endl;
+			return NULL;
+		}
+
+		else if(head->next == NULL){
+			delPtr = head;					// set delPtr to  current pointer
+			int temp = delPtr->data;				//set temp to the value of the data held
+			head = NULL;					//delete the
+
+			cout << "The value " << temp << " was deleted and list is now empty \n";
+			return temp;
+		}
+		else{
+			while (m_current->next != NULL)	//traverse list till we m_current next hits null
+			{
+				m_prev = m_current;
+				m_current = m_current->next;
+			}
+		}
+
+		m_prev->next = NULL;				//set prev node to be the new tail
+		delPtr = m_current;					// set delPtr to  current pointer
+		int temp = delPtr->data;				//set temp to the value of the data held
+		delete delPtr;							//delete the popped value
+		cout << "The value " << temp << " was deleted \n";
+		return temp;
 	}
-
-	int tempData = delPtr->data;
-
-
-	return tempData;
 }
 
 int LinkedList::getNth(int position)
@@ -112,12 +144,18 @@ int LinkedList::getNth(int position)
 int LinkedList::getLength() {
 	m_prev = head;
 	int count = 0;
+	if(head == NULL)
+	{
+		return 0;
+	}
+	else{
 	while(m_prev != NULL)
 	{
 		listLength = ++count;
 		m_prev = m_prev->next;
 	}
 	return listLength;
+	}
 }
 
 void LinkedList::printList() {
@@ -148,7 +186,7 @@ void LinkedList::insertNode(int insertData, int position){
 	int currentPos = 0;
 	if(position == 0)
 	{
-	pushHead(insertData);
+		pushHead(insertData);
 	}
 	else  if(head != NULL)
 	{
@@ -201,7 +239,6 @@ void LinkedList::deleteNode(int delData) {
 			head = head->next;
 			m_prev = NULL;
 		}
-
 		delete delPtr;
 		cout << "The value " << delData << " was deleted \n";
 	}
@@ -240,9 +277,13 @@ int main() {
 	}
 
 	for(int i = 0; i < 100; i++)
-		{
-			list.deleteNode(i);
-		}
+	{
+		list.deleteNode(i);
+	}
 
 	list.printList();
+	while(list.getLength() >0){
+	list.pop();
+	list.printList();
+	}
 }
