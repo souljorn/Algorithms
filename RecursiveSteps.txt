@@ -1,0 +1,47 @@
+Step's of merge sort
+
+1)Create a void function merge that takes in an int[], left index, middle index, right index.
+
+2)Create 2 arrays named left and right
+
+3)Create 3 ints i,j,k to be the iterators of all the arrays
+
+4)Create 2 ints n1, n2 to be the number of elements in each subarrays
+n1 = m - l + 1
+n2 = r - m
+
+5)Split the parent array into two subarrays
+for subarray Left l to m and for subarray right m + 1 to r
+
+6)Merge the subarrays back into one array using a three while loops
+while (i < n1 && j < n2){
+if (Left[i] <= Right[j]){
+    Arr[k] = Left[i];
+    i++;
+    }
+  else{
+    Arr[k] = Right[j];
+  }
+  k++;
+  }
+  while( i < n1 )
+  {
+  Arr[k] = Left[i];
+  i++;
+  k++;
+  }
+  while(j < n2)
+  {
+  Arr[k] = Right[j];
+  j++;
+  k++;
+  }
+
+7)Create a recursive void function named mergesort that takes in an int[],
+ a left index L, and a right index R.
+
+ 8) test condition to make sure L < R
+ 9) Find middle  m = L + (R - L)/2
+ 10) merge sort left array mergeSort(arr,L, M)
+ 11) merge sort right array mergeSort(arr, m+1, R)
+12) Call the recursive part of the function merge(arr, L, M, R);

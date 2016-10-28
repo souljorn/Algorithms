@@ -14,6 +14,7 @@ using namespace std;
 //merges two subarrys of arr
 void merge(int arr[], int l, int m, int r)
 {
+	//l = leftmost index, m = middle index, r = right most index
 	//iterators
 	int i, j, k;
 	//number of elements in subarray 1
